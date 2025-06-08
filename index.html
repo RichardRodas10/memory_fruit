@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Fruit</title>
+    <link rel="icon" href="img/logo.png" type="image/png">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    <div class="menu" id="menu">
+        <h2>Memory Fruit</h2>
+        <p>Selecciona una dificultad:</p>
+        <div class="buttons">
+            <button onclick="startGame('Fácil')">Fácil</button>
+            <button onclick="startGame('Medio')">Medio</button>
+            <button onclick="startGame('Difícil')">Difícil</button>
+            <button onclick="startGame('Tryhard')">Tryhard</button>
+        </div>
+    </div>
+    <div class="container" id="gameContainer" style="display: none;">
+        <h2 id="gameTitle">Memory Fruit</h2>
+        <p id="levelDisplay"></p>
+        <div class="info">
+            <span id="timer">Tiempo: 0s</span>
+            <span id="score">Puntaje: 0</span>
+        </div>
+        <div class="game"></div>
+        <div class="button-container">
+            <button onclick="restartLevel()">Reiniciar nivel</button>
+            <button onclick="resetGameToMenu()">Volver al menú</button>
+          </div>
+          
+    </div>
+    <!-- Pantalla de Victoria -->
+    <div id="victoryScreen" class="end-screen" style="display: none;">
+        <h2>¡Ganaste!</h2>
+        <p id="victoryDetails"></p>
+        <div class="button-container">
+            <button onclick="restartLevel()">Volver a jugar</button>
+            <button onclick="resetGameToMenu()">Menú principal</button>
+        </div>
+    </div>
+    <!-- Pantalla de Derrota -->
+    <div id="defeatScreen" class="end-screen" style="display: none;">
+        <h2>¡Tiempo agotado!</h2>
+        <div class="button-container">
+            <button onclick="restartLevel()">Intentar de nuevo</button>
+            <button onclick="resetGameToMenu()">Menú principal</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
