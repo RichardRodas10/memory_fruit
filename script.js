@@ -4,6 +4,7 @@ let emojis = [], shuf_emojis = [];
 let firstCard = null, secondCard = null, lockBoard = false;
 let timerInterval;
 let time = 0, score = 0;
+const clickSound = new Audio('audio/click.mp3');
 
 // Función que decide columnas según dificultad y ancho de pantalla
 function getColumnsForDifficulty(dificultad) {
@@ -85,6 +86,9 @@ function createBoard() {
 
         box.onclick = function () {
             if (lockBoard || this.classList.contains('boxOpen') || this.classList.contains('boxMatch')) return;
+
+            clickSound.currentTime = 0;
+            clickSound.play();
 
             this.classList.add('boxOpen');
 
