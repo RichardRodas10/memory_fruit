@@ -174,7 +174,13 @@ function resetGameToMenu() {
     document.getElementById('gameContainer').style.display = 'none';
     document.getElementById('victoryScreen').style.display = 'none';
     document.getElementById('defeatScreen').style.display = 'none';
+    document.getElementById('creditsScreen').style.display = 'none';
     score = 0;
     document.getElementById('score').textContent = 'Puntaje: 0';
     document.getElementById('timer').textContent = 'Tiempo: 0s';
+}
+
+function showCredits() {
+    document.getElementById('menu').style.display = 'none';
+    document.getElementById('creditsScreen').style.display = 'flex';
 }
