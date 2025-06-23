@@ -154,8 +154,29 @@ h2 {
 }
 
 .menu button:hover {
-    background: #267c65;
+    background: linear-gradient(135deg, #84b6b3, #0e898d);
     color: white;
+    transform: scale(1.05)
+}
+
+.menu button.btnCredit {
+    width: 100%;
+    padding: 15px 25px;
+    font-size: 1.3em;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #29a86d, #4b819b);
+    color: white;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    margin-top: 15px; /* para separarlo visualmente de los demás */
+}
+
+.menu button.btnCredit:hover {
+    background: linear-gradient(135deg, #ff6a00, #ee0979);
+    color: white;
+    transform: scale(1.05);
 }
 
 .info {
@@ -223,8 +244,26 @@ h2 {
     transform: translate(-50%, -50%);
     z-index: 10;
     width: 90vw;           /* usar 90% del viewport ancho */
-    max-width: 400px;      /* máximo 400px de ancho */
+    max-width: 500px;      /* máximo 400px de ancho */
     box-sizing: border-box;
+}
+
+#creditsScreen {
+    background: #2c3e50 !important;
+    color: #ecf0f1;
+}
+
+#creditsScreen ul {
+    font-size: 1.5em;
+    line-height: 1.8;
+}
+
+.credit-list {
+    text-align: left;
+    list-style-type: disc; /* viñeta clásica */
+    padding-left: 20px;
+    font-size: 1.3em;
+    color: white;
 }
 
 #levelDisplay {
