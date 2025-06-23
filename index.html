@@ -19,6 +19,7 @@
             <button onclick="startGame('Difícil')">Difícil</button>
             <button onclick="startGame('Tryhard')">Tryhard</button>
         </div>
+        <button class="btnCredit" onclick="showCredits()">Créditos</button>
     </div>
     <div class="container" id="gameContainer" style="display: none;">
         <h2 id="gameTitle">Memory Fruit</h2>
@@ -49,6 +50,18 @@
         <div class="button-container">
             <button onclick="restartLevel()">Intentar de nuevo</button>
             <button onclick="resetGameToMenu()">Menú principal</button>
+        </div>
+    </div>
+    <!-- Pantalla de Créditos -->
+    <div id="creditsScreen" class="end-screen" style="display: none; ">
+        <h2>Créditos</h2>
+        <ul class="credit-list">
+            <li>Richard Mauricio Rodas Carhuas</li>
+            <li>Jhefferson Emanuel Guerrero Torres</li>
+        </ul>
+        
+        <div class="button-container">
+            <button onclick="resetGameToMenu()">Volver al menú</button>
         </div>
     </div>
     <script src="script.js"></script>
