@@ -1,39 +1,39 @@
-let currentDifficulty = null;
-let allImages = Array.from({ length: 16 }, (_, i) => (i + 1).toString());
-let emojis = [], shuf_emojis = [];
-let firstCard = null, secondCard = null, lockBoard = false;
-let timerInterval;
-let time = 0, score = 0;
-const clickSound = new Audio('audio/click.mp3');
+// Variables
+let currentDifficulty = null; // Dificultad actual seleccionada
+let allImages = Array.from({ length: 16 }, (_, i) => (i + 1).toString()); // Lista de nombres de imágenes (1.png a 16.png)
+let emojis = [], shuf_emojis = []; // Arrays para imágenes originales y mezcladas
+let firstCard = null, secondCard = null, lockBoard = false; // Control del tablero y selección de cartas
+let timerInterval; // Referencia al temporizador
+let time = 0, score = 0; // Tiempo y puntaje
+const clickSound = new Audio('audio/click.mp3'); // Sonido que se reproduce al hacer clic en una carta
 
-// Función que decide columnas según dificultad y ancho de pantalla
+// Función que determina cuántas columnas tendrá el tablero según la dificultad y el tamaño de pantalla
 function getColumnsForDifficulty(dificultad) {
     let screenWidth = window.innerWidth;
 
     switch (dificultad) {
         case 'Fácil':
-            return 4;
         case 'Medio':
             return 4;
         case 'Difícil':
-            // Si es móvil (ancho <= 600px), 6 columnas, si no 4 columnas
             return screenWidth <= 600 ? 4 : 6;
         case 'Tryhard':
-            // Si es móvil (ancho <= 600px), 6 columnas, si no 4 columnas
-        return screenWidth <= 600 ? 4 : 8;
+            return screenWidth <= 600 ? 4 : 8;
         default:
             return 6;
     }
 }
 
+// Inicia el juego según la dificultad seleccionada
 function startGame(dificultad) {
     currentDifficulty = dificultad;
     document.getElementById('menu').style.display = 'none';
     document.getElementById('gameContainer').style.display = 'block';
     document.querySelector('.game').innerHTML = '';
 
-    let numPairs, bgColor, timeLimit;
+    let numPairs, timeLimit;
 
+    // Asignar número de pares y límite de tiempo según dificultad
     switch (dificultad) {
         case 'Fácil':
             numPairs = 4;
@@ -55,22 +55,21 @@ function startGame(dificultad) {
 
     document.getElementById('levelDisplay').textContent = `Nivel: ${dificultad}`;
 
-    // Aquí uso la función para obtener columnas dinámicamente
+    // Ajustar columnas del tablero
     let columns = getColumnsForDifficulty(dificultad);
     document.querySelector('.game').style.gridTemplateColumns = `repeat(${columns}, auto)`;
 
+    // Preparar las imágenes para el juego (duplicadas y mezcladas)
     emojis = [];
     const selected = allImages.slice(0, numPairs);
-    selected.forEach(img => {
-        emojis.push(img, img);
-    });
-
+    selected.forEach(img => emojis.push(img, img));
     shuf_emojis = emojis.sort(() => Math.random() - 0.5);
 
-    createBoard();
-    startTimer(timeLimit);
+    createBoard(); // Crear tablero
+    startTimer(timeLimit); // Iniciar temporizador
 }
 
+// Crea dinámicamente el tablero con las cartas
 function createBoard() {
     firstCard = null;
     secondCard = null;
@@ -79,16 +78,19 @@ function createBoard() {
     for (let i = 0; i < shuf_emojis.length; i++) {
         let box = document.createElement('div');
         box.className = 'item';
+
         let img = document.createElement('img');
         img.src = `img/${shuf_emojis[i]}.png`;
         img.classList.add('hidden-img');
+
         box.appendChild(img);
 
+        // Evento al hacer clic sobre una carta
         box.onclick = function () {
             if (lockBoard || this.classList.contains('boxOpen') || this.classList.contains('boxMatch')) return;
 
             clickSound.currentTime = 0;
-            clickSound.play();
+            clickSound.play(); // Reproducir sonido al hacer clic
 
             this.classList.add('boxOpen');
 
@@ -99,22 +101,25 @@ function createBoard() {
                 lockBoard = true;
 
                 setTimeout(() => {
+                    // Si ambas cartas coinciden
                     if (firstCard.innerHTML === secondCard.innerHTML) {
                         firstCard.classList.add('boxMatch');
                         secondCard.classList.add('boxMatch');
                         score += 100;
-                        document.getElementById('score').textContent = `Puntaje: ${score}`;
                     } else {
+                        // Si no coinciden
                         firstCard.classList.remove('boxOpen');
                         secondCard.classList.remove('boxOpen');
                         score -= 10;
-                        document.getElementById('score').textContent = `Puntaje: ${score}`;
                     }
 
+                    // Actualizar puntaje
+                    document.getElementById('score').textContent = `Puntaje: ${score}`;
                     firstCard = null;
                     secondCard = null;
                     lockBoard = false;
 
+                    // Verificar si el jugador ganó (todas las cartas emparejadas)
                     if (document.querySelectorAll('.boxMatch').length === emojis.length) {
                         clearInterval(timerInterval);
                         setTimeout(() => {
@@ -129,17 +134,20 @@ function createBoard() {
             }
         };
 
-        document.querySelector('.game').appendChild(box);
+        document.querySelector('.game').appendChild(box); // Añadir carta al tablero
     }
 }
 
+// Inicia el temporizador de cuenta regresiva
 function startTimer(startTime) {
     time = startTime;
     document.getElementById('timer').textContent = `Tiempo: ${time}s`;
-    clearInterval(timerInterval);
+    clearInterval(timerInterval); // Detener cualquier temporizador anterior
+
     timerInterval = setInterval(() => {
         time--;
         document.getElementById('timer').textContent = `Tiempo: ${time}s`;
+
         if (time <= 0) {
             clearInterval(timerInterval);
             document.getElementById('gameContainer').style.display = 'none';
@@ -148,7 +156,7 @@ function startTimer(startTime) {
     }, 1000);
 }
 
-// Escuchar cambio de tamaño para ajustar columnas si es necesario
+// Ajustar columnas al cambiar el tamaño de la ventana
 window.addEventListener('resize', () => {
     if (currentDifficulty) {
         let columns = getColumnsForDifficulty(currentDifficulty);
@@ -156,7 +164,7 @@ window.addEventListener('resize', () => {
     }
 });
 
-// Botón para reiniciar el nivel actual
+// Reinicia el nivel actual
 function restartLevel() {
     clearInterval(timerInterval);
     score = 0;
@@ -167,7 +175,7 @@ function restartLevel() {
     startGame(currentDifficulty);
 }
 
-// Botón para volver al menú
+// Regresa al menú principal desde cualquier pantalla
 function resetGameToMenu() {
     clearInterval(timerInterval);
     document.getElementById('menu').style.display = 'block';
@@ -180,6 +188,7 @@ function resetGameToMenu() {
     document.getElementById('timer').textContent = 'Tiempo: 0s';
 }
 
+// Muestra la pantalla de créditos
 function showCredits() {
     document.getElementById('menu').style.display = 'none';
     document.getElementById('creditsScreen').style.display = 'flex';
