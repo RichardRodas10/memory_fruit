@@ -4,66 +4,90 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Memory Fruit</title>
-    <link rel="icon" href="img/logoFruit.png" type="image/png">
+    <link rel="icon" href="img/logo.png" type="image/png">
     <link rel="stylesheet" href="style.css">
+    <!-- Fuente personalizada desde Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&display=swap" rel="stylesheet">
-
 </head>
 <body>
+    <!-- Pantalla principal del menú -->
     <div class="menu" id="menu">
-        <h2>Memory Fruit</h2>
-        <p>Selecciona una dificultad:</p>
+        <h2>Memory Fruit</h2> <!-- Título del juego -->
+        <p>Selecciona una dificultad:</p> <!-- Texto descriptivo -->
+
+        <!-- Botones de dificultad -->
         <div class="buttons">
             <button onclick="startGame('Fácil')">Fácil</button>
             <button onclick="startGame('Medio')">Medio</button>
             <button onclick="startGame('Difícil')">Difícil</button>
             <button onclick="startGame('Tryhard')">Tryhard</button>
         </div>
+
+        <!-- Botón de créditos -->
         <button class="btnCredit" onclick="showCredits()">Créditos</button>
     </div>
+
+    <!-- Contenedor principal del juego (tablero, puntaje y tiempo) -->
     <div class="container" id="gameContainer" style="display: none;">
-        <h2 id="gameTitle">Memory Fruit</h2>
-        <p id="levelDisplay"></p>
+        <h2 id="gameTitle">Memory Fruit</h2> <!-- Título durante el juego -->
+        <p id="levelDisplay"></p> <!-- Muestra el nivel actual -->
+
+        <!-- Información de tiempo y puntaje -->
         <div class="info">
             <span id="timer">Tiempo: 0s</span>
             <span id="score">Puntaje: 0</span>
         </div>
+
+        <!-- Tablero del juego -->
         <div class="game"></div>
+
+        <!-- Botones de reinicio o volver al menú -->
         <div class="button-container">
             <button onclick="restartLevel()">Reiniciar nivel</button>
             <button onclick="resetGameToMenu()">Volver al menú</button>
-          </div>
-          
+        </div>
     </div>
-    <!-- Pantalla de Victoria -->
+
+    <!-- Pantalla de victoria -->
     <div id="victoryScreen" class="end-screen" style="display: none;">
         <h2>¡Ganaste!</h2>
-        <p id="victoryDetails"></p>
+        <p id="victoryDetails"></p> <!-- Muestra puntaje y tiempo restante -->
+
+        <!-- Botones después de ganar -->
         <div class="button-container">
             <button onclick="restartLevel()">Volver a jugar</button>
             <button onclick="resetGameToMenu()">Menú principal</button>
         </div>
     </div>
-    <!-- Pantalla de Derrota -->
+
+    <!-- Pantalla de derrota -->
     <div id="defeatScreen" class="end-screen" style="display: none;">
         <h2>¡Tiempo agotado!</h2>
+
+        <!-- Botones después de perder -->
         <div class="button-container">
             <button onclick="restartLevel()">Intentar de nuevo</button>
             <button onclick="resetGameToMenu()">Menú principal</button>
         </div>
     </div>
-    <!-- Pantalla de Créditos -->
-    <div id="creditsScreen" class="end-screen" style="display: none; ">
+
+    <!-- Pantalla de créditos -->
+    <div id="creditsScreen" class="end-screen" style="display: none;">
         <h2>Créditos</h2>
+
+        <!-- Lista de autores del juego -->
         <ul class="credit-list">
             <li>Richard Mauricio Rodas Carhuas</li>
             <li>Jhefferson Emanuel Guerrero Torres</li>
         </ul>
-        
+
+        <!-- Botón para volver al menú desde créditos -->
         <div class="button-container">
             <button onclick="resetGameToMenu()">Volver al menú</button>
         </div>
     </div>
+
+    <!-- Script principal del juego -->
     <script src="script.js"></script>
 </body>
 </html>
