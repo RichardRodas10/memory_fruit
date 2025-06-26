@@ -5,7 +5,51 @@ let emojis = [], shuf_emojis = []; // Arrays para imágenes originales y mezclad
 let firstCard = null, secondCard = null, lockBoard = false; // Control del tablero y selección de cartas
 let timerInterval; // Referencia al temporizador
 let time = 0, score = 0; // Tiempo y puntaje
-const clickSound = new Audio('audio/click.mp3'); // Sonido que se reproduce al hacer clic en una carta
+const clickSound = new Audio('audio/clickCarta.mp3'); // Sonido que se reproduce al hacer clic en una carta
+
+// Música de fondo - diferentes pistas por nivel
+const musicTracks = {
+    'Fácil': new Audio('audio/fondo.mp3'),     
+    'Medio': new Audio('audio/fondo2.mp3'),     
+    'Difícil': new Audio('audio/fondo3.mp3'), 
+    'Tryhard': new Audio('audio/fondo4.mp3')    
+};
+
+// Configurar todas las pistas
+Object.values(musicTracks).forEach(track => {
+    track.loop = true;
+    track.volume = 0.2;
+});
+
+let currentTrack = null; // Pista actual reproduciéndose
+let musicStarted = false;
+
+function startBackgroundMusic(difficulty) {
+    // Detener música anterior si existe
+    if (currentTrack) {
+        currentTrack.pause();
+        currentTrack.currentTime = 0;
+    }
+    
+    // Seleccionar y reproducir nueva pista
+    currentTrack = musicTracks[difficulty];
+    if (currentTrack) {
+        currentTrack.currentTime = 0;
+        currentTrack.play().catch(e => {
+            console.log('No se pudo reproducir la música automáticamente:', e);
+        });
+        musicStarted = true;
+    }
+}
+
+function stopBackgroundMusic() {
+    if (currentTrack) {
+        currentTrack.pause();
+        currentTrack.currentTime = 0;
+    }
+    currentTrack = null;
+    musicStarted = false;
+}
 
 // Función que determina cuántas columnas tendrá el tablero según la dificultad y el tamaño de pantalla
 function getColumnsForDifficulty(dificultad) {
@@ -26,6 +70,9 @@ function getColumnsForDifficulty(dificultad) {
 
 // Inicia el juego según la dificultad seleccionada
 function startGame(dificultad) {
+
+    startBackgroundMusic(dificultad); // Iniciar música específica del nivel
+
     currentDifficulty = dificultad;
     document.getElementById('menu').style.display = 'none';
     document.getElementById('gameContainer').style.display = 'block';
@@ -122,6 +169,7 @@ function createBoard() {
                     // Verificar si el jugador ganó (todas las cartas emparejadas)
                     if (document.querySelectorAll('.boxMatch').length === emojis.length) {
                         clearInterval(timerInterval);
+                        stopBackgroundMusic();
                         setTimeout(() => {
                             document.getElementById('gameContainer').style.display = 'none';
                             document.getElementById('victoryScreen').style.display = 'flex';
@@ -150,6 +198,9 @@ function startTimer(startTime) {
 
         if (time <= 0) {
             clearInterval(timerInterval);
+
+            stopBackgroundMusic(); // Pausar música al perder
+
             document.getElementById('gameContainer').style.display = 'none';
             document.getElementById('defeatScreen').style.display = 'flex';
         }
@@ -172,6 +223,10 @@ function restartLevel() {
     document.getElementById('victoryScreen').style.display = 'none';
     document.getElementById('defeatScreen').style.display = 'none';
     document.getElementById('gameContainer').style.display = 'block';
+
+    // Reiniciar música del nivel actual desde el principio
+    startBackgroundMusic(currentDifficulty);
+
     startGame(currentDifficulty);
 }
 
@@ -186,10 +241,17 @@ function resetGameToMenu() {
     score = 0;
     document.getElementById('score').textContent = 'Puntaje: 0';
     document.getElementById('timer').textContent = 'Tiempo: 0s';
+
+    // Detener música al volver al menú
+    stopBackgroundMusic();
+
 }
 
 // Muestra la pantalla de créditos
 function showCredits() {
+
+    startBackgroundMusic(); // Iniciar música si aún no ha comenzado
+
     document.getElementById('menu').style.display = 'none';
     document.getElementById('creditsScreen').style.display = 'flex';
 }
